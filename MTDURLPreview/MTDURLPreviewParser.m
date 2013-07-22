@@ -2,7 +2,25 @@
 #import "MTDHTMLElement.h"
 
 
-BOOL MTDStringHasImageExtension(NSString *string);
+
+static BOOL MTDStringHasImageExtension(NSString *string) {
+    static NSSet *imageExtensions = nil;
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        imageExtensions = [NSSet setWithObjects:@"tiff", @"tif", @"jpg", @"jpeg", @"png", @"bmp", @"bmpf", @"ico", nil];
+    });
+
+
+    NSString *extension = [string.pathExtension lowercaseString];
+    NSRange parameterRange = [extension rangeOfString:@"?"];
+
+    if (parameterRange.location != NSNotFound) {
+        extension = [extension substringToIndex:parameterRange.location];
+    }
+
+    return [imageExtensions containsObject:extension];
+}
 
 
 @implementation MTDURLPreviewParser
@@ -64,27 +82,3 @@ BOOL MTDStringHasImageExtension(NSString *string);
 }
 
 @end
-
-
-////////////////////////////////////////////////////////////////////////
-#pragma mark - Functions
-////////////////////////////////////////////////////////////////////////
-
-BOOL MTDStringHasImageExtension(NSString *string) {
-    static NSSet *imageExtensions = nil;
-
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        imageExtensions = [NSSet setWithObjects:@"tiff", @"tif", @"jpg", @"jpeg", @"png", @"bmp", @"bmpf", @"ico", nil];
-    });
-
-
-    NSString *extension = [string.pathExtension lowercaseString];
-    NSRange parameterRange = [extension rangeOfString:@"?"];
-
-    if (parameterRange.location != NSNotFound) {
-        extension = [extension substringToIndex:parameterRange.location];
-    }
-
-    return [imageExtensions containsObject:extension];
-}
