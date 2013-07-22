@@ -22,7 +22,7 @@ static UIFont *domainFont = nil;
 ////////////////////////////////////////////////////////////////////////
 
 + (void)initialize {
-    if (self == [MTDURLPreview class]) {
+    if (self == [MTDURLPreviewView class]) {
         titleFont = [UIFont boldSystemFontOfSize:16.f];
         domainFont = [UIFont systemFontOfSize:15.f];
     }
