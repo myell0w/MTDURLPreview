@@ -31,35 +31,56 @@ static BOOL MTDStringHasImageExtension(NSString *string) {
     NSURL *imageURL = nil;
     NSString *content = nil;
 
-    MTDHTMLElement *titleElement = [MTDHTMLElement nodeForXPathQuery:@"//html/head/title" onHTML:data];
-    title = titleElement.contentString;
+    // Check for Open Graph Metadata first
+    NSArray *metaElements = [MTDHTMLElement nodesForXPathQuery:@"//html/head/meta" onHTML:data];
+    for (MTDHTMLElement *metaElement in metaElements) {
+        NSString *property = [metaElement attributeWithName:@"property"];
 
-    NSArray *imageElements = [MTDHTMLElement nodesForXPathQuery:@"//img" onHTML:data];
-
-    // heuristic: give higher priority to jpg images
-    for (MTDHTMLElement *element in imageElements) {
-        NSString *imageAddress = [element attributeWithName:@"src"];
-        NSString *lowercaseAddress = [imageAddress lowercaseString];
-
-        if ([lowercaseAddress hasSuffix:@"jpg"] || [lowercaseAddress hasSuffix:@"jpeg"]) {
+        if ([property isEqualToString:@"og:title"]) {
+            title = [metaElement attributeWithName:@"content"];
+        } else if ([property isEqualToString:@"og:image"]) {
+            NSString *imageAddress = [metaElement attributeWithName:@"content"];
             imageURL = [self sanitizedImageURLWithBaseURL:URL imageAddress:imageAddress];
-            break;
+        } else if ([property isEqualToString:@"og:description"]) {
+            content = [metaElement attributeWithName:@"content"];
         }
     }
 
+    if (title == nil) {
+        MTDHTMLElement *titleElement = [MTDHTMLElement nodeForXPathQuery:@"//html/head/title" onHTML:data];
+        title = titleElement.contentString;
+    }
+
     if (imageURL == nil) {
+        NSArray *imageElements = [MTDHTMLElement nodesForXPathQuery:@"//img" onHTML:data];
+
+        // heuristic: give higher priority to jpg images
         for (MTDHTMLElement *element in imageElements) {
             NSString *imageAddress = [element attributeWithName:@"src"];
+            NSString *lowercaseAddress = [imageAddress lowercaseString];
 
-            if (MTDStringHasImageExtension(imageAddress)) {
+            if ([lowercaseAddress hasSuffix:@"jpg"] || [lowercaseAddress hasSuffix:@"jpeg"]) {
                 imageURL = [self sanitizedImageURLWithBaseURL:URL imageAddress:imageAddress];
                 break;
             }
         }
+
+        if (imageURL == nil) {
+            for (MTDHTMLElement *element in imageElements) {
+                NSString *imageAddress = [element attributeWithName:@"src"];
+
+                if (MTDStringHasImageExtension(imageAddress)) {
+                    imageURL = [self sanitizedImageURLWithBaseURL:URL imageAddress:imageAddress];
+                    break;
+                }
+            }
+        }
     }
 
-    MTDHTMLElement *firstPElement = [MTDHTMLElement nodeForXPathQuery:@"//p" onHTML:data];
-    content = firstPElement.contentStringByUnifyingSubnodes;
+    if (content == nil) {
+        MTDHTMLElement *firstPElement = [MTDHTMLElement nodeForXPathQuery:@"//p" onHTML:data];
+        content = firstPElement.contentStringByUnifyingSubnodes;
+    }
 
     return [[MTDURLPreview alloc] initWithTitle:title
                                          domain:domain
@@ -72,12 +93,14 @@ static BOOL MTDStringHasImageExtension(NSString *string) {
 ////////////////////////////////////////////////////////////////////////
 
 + (NSURL *)sanitizedImageURLWithBaseURL:(NSURL *)URL imageAddress:(NSString *)imageAddress {
-    if ([imageAddress hasPrefix:@"//"]) {
+    if (imageAddress == nil) {
+        return nil;
+    } else if ([imageAddress hasPrefix:@"//"]) {
         imageAddress = [imageAddress substringFromIndex:2];
     } else if ([imageAddress hasPrefix:@"/"]) {
         imageAddress = [[@"http://" stringByAppendingString:URL.host] stringByAppendingString:imageAddress];
     }
-
+    
     return [NSURL URLWithString:imageAddress];
 }
 
