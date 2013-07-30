@@ -54,14 +54,24 @@ static BOOL MTDStringHasImageExtension(NSString *string) {
     if (imageURL == nil) {
         NSArray *imageElements = [MTDHTMLElement nodesForXPathQuery:@"//img" onHTML:data];
 
-        // heuristic: give higher priority to jpg images
-        for (MTDHTMLElement *element in imageElements) {
-            NSString *imageAddress = [element attributeWithName:@"src"];
-            NSString *lowercaseAddress = [imageAddress lowercaseString];
+        // special cases
+        if ([domain rangeOfString:@"imgur"].location != NSNotFound) {
+            NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"MTDURLPreview" ofType:@"bundle"];
+            NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
 
-            if ([lowercaseAddress hasSuffix:@"jpg"] || [lowercaseAddress hasSuffix:@"jpeg"]) {
-                imageURL = [self sanitizedImageURLWithBaseURL:URL imageAddress:imageAddress];
-                break;
+            imageURL = [bundle URLForResource:@"imgur-placeholder" withExtension:@"jpg"];
+        }
+
+        if (imageURL == nil) {
+            // heuristic: give higher priority to jpg images
+            for (MTDHTMLElement *element in imageElements) {
+                NSString *imageAddress = [element attributeWithName:@"src"];
+                NSString *lowercaseAddress = [imageAddress lowercaseString];
+
+                if ([lowercaseAddress hasSuffix:@"jpg"] || [lowercaseAddress hasSuffix:@"jpeg"]) {
+                    imageURL = [self sanitizedImageURLWithBaseURL:URL imageAddress:imageAddress];
+                    break;
+                }
             }
         }
 
