@@ -15,6 +15,7 @@
 		9B7C060E179D3375009D8A0F /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B7C060D179D3375009D8A0F /* libxml2.dylib */; };
 		9B7C0610179D3380009D8A0F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B7C060F179D3380009D8A0F /* UIKit.framework */; };
 		9B7C0614179D33C1009D8A0F /* MTDHTMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B7C0613179D33C1009D8A0F /* MTDHTMLElement.m */; };
+		9BF7A70E17A90FC800819735 /* MTDURLPreviewCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BF7A70D17A90FC700819735 /* MTDURLPreviewCache.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,6 +46,8 @@
 		9B7C0612179D33C1009D8A0F /* MTDHTMLElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTDHTMLElement.h; sourceTree = "<group>"; };
 		9B7C0613179D33C1009D8A0F /* MTDHTMLElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTDHTMLElement.m; sourceTree = "<group>"; };
 		9B7C0616179D37D7009D8A0F /* MTDURLPreview.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MTDURLPreview.bundle; sourceTree = "<group>"; };
+		9BF7A70C17A90FC700819735 /* MTDURLPreviewCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTDURLPreviewCache.h; sourceTree = "<group>"; };
+		9BF7A70D17A90FC700819735 /* MTDURLPreviewCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTDURLPreviewCache.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,13 +95,15 @@
 		9B7C05FA179D3301009D8A0F /* MTDURLPreview */ = {
 			isa = PBXGroup;
 			children = (
-				9B7C0611179D33C1009D8A0F /* Parser */,
+				9B7C0611179D33C1009D8A0F /* HTML Parser */,
 				9B7C05FD179D3301009D8A0F /* MTDURLPreview.h */,
 				9B7C05FF179D3301009D8A0F /* MTDURLPreview.m */,
 				9B7C0607179D334D009D8A0F /* MTDURLPreviewParser.h */,
 				9B7C0608179D334D009D8A0F /* MTDURLPreviewParser.m */,
 				9B7C0609179D334D009D8A0F /* MTDURLPreviewView.h */,
 				9B7C060A179D334D009D8A0F /* MTDURLPreviewView.m */,
+				9BF7A70C17A90FC700819735 /* MTDURLPreviewCache.h */,
+				9BF7A70D17A90FC700819735 /* MTDURLPreviewCache.m */,
 				9B7C05FB179D3301009D8A0F /* Supporting Files */,
 			);
 			path = MTDURLPreview;
@@ -112,12 +117,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		9B7C0611179D33C1009D8A0F /* Parser */ = {
+		9B7C0611179D33C1009D8A0F /* HTML Parser */ = {
 			isa = PBXGroup;
 			children = (
 				9B7C0612179D33C1009D8A0F /* MTDHTMLElement.h */,
 				9B7C0613179D33C1009D8A0F /* MTDHTMLElement.m */,
 			);
+			name = "HTML Parser";
 			path = Parser;
 			sourceTree = "<group>";
 		};
@@ -184,6 +190,7 @@
 				9B7C060B179D334D009D8A0F /* MTDURLPreviewParser.m in Sources */,
 				9B7C060C179D334D009D8A0F /* MTDURLPreviewView.m in Sources */,
 				9B7C0614179D33C1009D8A0F /* MTDHTMLElement.m in Sources */,
+				9BF7A70E17A90FC800819735 /* MTDURLPreviewCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,6 +301,7 @@
 				9B7C0605179D3301009D8A0F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
