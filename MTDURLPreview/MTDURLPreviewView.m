@@ -79,12 +79,12 @@ static UIFont *domainFont = nil;
     }
 
     CGFloat textWidth = width - textX - kMTDPadding;
-    CGFloat domainHeight = domainFont.lineHeight;
-    CGFloat maxTitleHeight = titleFont.lineHeight * 3;
+    CGFloat domainHeight = ceil(domainFont.lineHeight);
+    CGFloat maxTitleHeight = titleFont.lineHeight * 3.f;
     CGSize constraint = CGSizeMake(textWidth, maxTitleHeight);
     CGSize sizeTitle = [title sizeWithFont:titleFont constrainedToSize:constraint lineBreakMode:kMTDTitleLineBreakMode];
 
-    return MAX(minHeight, kMTDPadding + sizeTitle.height + domainHeight + kMTDPadding);
+    return MAX(minHeight, kMTDPadding + ceil(sizeTitle.height) + domainHeight + kMTDPadding);
 }
 
 + (void)setTitleFont:(UIFont *)titleFont {
@@ -192,10 +192,11 @@ static UIFont *domainFont = nil;
     }
 
     CGFloat textWidth = size.width - textX - kMTDPadding;
-    CGFloat domainHeight = self.domainLabel.font.lineHeight;
-    CGFloat maxTitleHeight = self.titleLabel.font.lineHeight * 3;
+    CGFloat domainHeight = ceil(self.domainLabel.font.lineHeight);
+    CGFloat maxTitleHeight = self.titleLabel.font.lineHeight * 3.f;
     CGSize constraint = CGSizeMake(textWidth, maxTitleHeight);
     CGSize sizeTitle = [self.titleLabel.text sizeWithFont:self.titleLabel.font constrainedToSize:constraint lineBreakMode:self.titleLabel.lineBreakMode];
+    sizeTitle = CGSizeMake(ceil(sizeTitle.width), ceil(sizeTitle.height));
 
     if (shouldLayout) {
         _imageView.frame = CGRectMake(kMTDPadding, kMTDPadding + 3.f, kMTDImageDimension, kMTDImageDimension);
