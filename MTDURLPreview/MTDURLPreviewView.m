@@ -156,7 +156,6 @@ static UIFont *domainFont = nil;
 - (UIImageView *)imageView {
     if (_imageView == nil) {
         _imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MTDURLPreview.bundle/image-placeholder"]];
-        _imageView.backgroundColor = [UIColor colorWithRed:209.f/255.f green:209.f/255.f blue:209.f/255.f alpha:1.f];
         _imageView.contentMode = UIViewContentModeScaleAspectFill;
         _imageView.clipsToBounds = YES;
         [self addSubview:_imageView];
