@@ -127,7 +127,7 @@ static UIFont *domainFont = nil;
     return [self neededHeightForTitle:preview.title
                                domain:preview.domain
                               content:preview.content
-                         imageVisible:preview.imageURL != nil
+                         imageVisible:YES
                    constrainedToWidth:width];
 }
 
@@ -136,14 +136,12 @@ static UIFont *domainFont = nil;
     self.domainLabel.text = preview.domain;
     self.contentLabel.text = preview.content;
 
+    UIImage *placeholderImage = [UIImage imageNamed:@"MTDURLPreview.bundle/image-placeholder"];
+    self.imageView.image = placeholderImage;
     if (preview.imageURL != nil) {
-        UIImage *placeholderImage = [UIImage imageNamed:@"MTDURLPreview.bundle/image-placeholder"];
-        
         // Support for SDWebImage
         if ([self.imageView respondsToSelector:@selector(setImageWithURL:placeholderImage:)]) {
             (void)objc_msgSend(self.imageView, @selector(setImageWithURL:placeholderImage:), preview.imageURL, placeholderImage);
-        } else {
-            self.imageView.image = placeholderImage;
         }
     }
 
