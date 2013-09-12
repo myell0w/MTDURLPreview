@@ -31,23 +31,25 @@ static UIFont *domainFont = nil;
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        UIColor *textColor = [UIColor colorWithRed:62.f/255.f green:66.f/255.f blue:81.f/255.f alpha:1.f];
+        self.backgroundColor = [UIColor colorWithRed:246.f/255.f green:246.f/255.f blue:246.f/255.f alpha:1.f];
+        _textColor = [UIColor colorWithRed:62.f/255.f green:66.f/255.f blue:81.f/255.f alpha:1.f];
+        _borderColor = [UIColor colorWithRed:209.f/255.f green:209.f/255.f blue:209.f/255.f alpha:1.f];
 
         _titleLabel = [self labelWithFont:titleFont
-                                textColor:textColor
+                                textColor:_textColor
                             numberOfLines:0
                             lineBreakMode:kMTDTitleLineBreakMode];
         [self addSubview:_titleLabel];
 
         _domainLabel = [self labelWithFont:domainFont
-                                 textColor:textColor
+                                 textColor:_textColor
                              numberOfLines:1
                              lineBreakMode:NSLineBreakByTruncatingTail];
         [self addSubview:_domainLabel];
 
-        self.backgroundColor = [UIColor colorWithRed:246.f/255.f green:246.f/255.f blue:246.f/255.f alpha:1.f];
+
         self.layer.borderWidth = 1.f;
-        self.layer.borderColor = [UIColor colorWithRed:209.f/255.f green:209.f/255.f blue:209.f/255.f alpha:1.f].CGColor;
+        self.layer.borderColor = _borderColor.CGColor;
     }
     
     return self;
@@ -147,6 +149,22 @@ static UIFont *domainFont = nil;
 
     [self sizeToFit];
     [self setNeedsLayout];
+}
+
+- (void)setTextColor:(UIColor *)textColor {
+    if (textColor != _textColor) {
+        _textColor = textColor;
+        self.titleLabel.textColor = textColor;
+        self.domainLabel.textColor = textColor;
+        self.contentLabel.textColor = textColor;
+    }
+}
+
+- (void)setBorderColor:(UIColor *)borderColor {
+    if (borderColor != _borderColor) {
+        _borderColor = borderColor;
+        self.layer.borderColor = _borderColor.CGColor;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////
