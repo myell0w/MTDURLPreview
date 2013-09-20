@@ -29,5 +29,6 @@ typedef void(^mtd_url_preview_block)(MTDURLPreview *preview, NSError *error);
                       content:(NSString *)content;
 
 + (void)loadPreviewWithURL:(NSURL *)URL completion:(mtd_url_preview_block)completion;
++ (void)cancelLoadOfPreviewWithURL:(NSURL *)URL;
 
 @end

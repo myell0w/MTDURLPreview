@@ -3,6 +3,7 @@
 #import "MTDURLPreviewCache.h"
 
 
+static NSMutableSet *canceledURLs = nil;
 static dispatch_queue_t mtd_url_preview_queue() {
     static dispatch_queue_t queue;
     static dispatch_once_t onceToken;
@@ -18,6 +19,7 @@ static MTDURLPreviewCache* mtd_preview_cache() {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         cache = [MTDURLPreviewCache new];
+        canceledURLs = [NSMutableSet new];
     });
 
     return cache;
@@ -69,16 +71,29 @@ static MTDURLPreviewCache* mtd_preview_cache() {
                     MTDURLPreview *preview = [MTDURLPreviewParser previewFromHTMLData:responseData URL:URL];
 
                     [mtd_preview_cache() cachePreview:preview forURL:URL];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        completion(preview, nil);
-                    });
+
+                    if (![canceledURLs containsObject:URL]) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            completion(preview, nil);
+                        });
+                    }
                 } else {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        completion(nil, error);
-                    });
+                    if (![canceledURLs containsObject:URL]) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            completion(nil, error);
+                        });
+                    }
                 }
+
+                [canceledURLs removeObject:URL];
             });
         }];
+    }
+}
+
++ (void)cancelLoadOfPreviewWithURL:(NSURL *)URL {
+    if (URL != nil) {
+        [canceledURLs addObject:URL];
     }
 }
 
