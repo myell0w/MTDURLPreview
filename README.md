@@ -9,7 +9,9 @@ If you have ideas for improvement (e.g. better image heuristic), please hit me u
 
 ## Credits
 
-MTDURLPreview was created by [Matthias Tretter](https://github.com/myell0w/) ([@myell0w](http://twitter.com/myell0w)).
+MTDURLPreview was created by [Matthias Tretter](https://github.com/myell0w/) ([@myell0w](http://twitter.com/myell0w)) and extracted from the beatiful reddit client [*Biscuit for reddit*](http://biscuitapp.co).
+
+![Biscuit for reddit](http://cdn.maikoapp.com/4u9e/5cu3e/200w.png)
 
 ## License
 
