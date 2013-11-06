@@ -48,7 +48,7 @@ static UIFont *domainFont = nil;
         [self addSubview:_domainLabel];
 
 
-        self.layer.borderWidth = 1.f;
+        self.layer.borderWidth = 1.f / [UIScreen mainScreen].scale;
         self.layer.borderColor = _borderColor.CGColor;
     }
     

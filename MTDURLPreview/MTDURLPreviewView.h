@@ -26,6 +26,7 @@
 @property (nonatomic, readonly) UILabel *contentLabel;
 @property (nonatomic, readonly) UIImageView *imageView;
 
+@property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, strong) UIColor *textColor;
 @property (nonatomic, strong) UIColor *borderColor;
 
