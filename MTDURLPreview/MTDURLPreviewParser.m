@@ -55,12 +55,13 @@ static BOOL MTDStringHasImageExtension(NSString *string) {
         NSArray *imageElements = [MTDHTMLElement nodesForXPathQuery:@"//img" onHTML:data];
         NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"MTDURLPreview" ofType:@"bundle"];
         NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
+        NSString *suffix = [UIScreen mainScreen].scale > 1.f ? @"@2x" : @"";
 
         // special cases
         if ([domain rangeOfString:@"imgur"].location != NSNotFound) {
-            imageURL = [bundle URLForResource:@"imgur-placeholder" withExtension:@"jpg"];
+            imageURL = [bundle URLForResource:[@"imgur-placeholder" stringByAppendingString:suffix] withExtension:@"jpg"];
         } else if ([domain rangeOfString:@"reddit"].location != NSNotFound) {
-            imageURL = [bundle URLForResource:@"reddit-placeholder" withExtension:@"png"];
+            imageURL = [bundle URLForResource:[@"reddit-placeholder" stringByAppendingString:suffix] withExtension:@"png"];
         }
 
         if (imageURL == nil) {
