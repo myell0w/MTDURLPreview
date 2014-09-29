@@ -57,8 +57,8 @@ static UIFont *domainFont = nil;
 
 - (void)dealloc {
     // Support for SDWebImage
-    if ([_imageView respondsToSelector:@selector(cancelCurrentImageLoad)]) {
-        (void)objc_msgSend(_imageView, @selector(cancelCurrentImageLoad));
+    if ([_imageView respondsToSelector:@selector(sd_cancelCurrentImageLoad)]) {
+        [_imageView performSelector:@selector(sd_cancelCurrentImageLoad)];
     }
 }
 
@@ -140,8 +140,8 @@ static UIFont *domainFont = nil;
     self.imageView.image = placeholderImage;
     if (preview.imageURL != nil) {
         // Support for SDWebImage
-        if ([self.imageView respondsToSelector:@selector(setImageWithURL:placeholderImage:)]) {
-            (void)objc_msgSend(self.imageView, @selector(setImageWithURL:placeholderImage:), preview.imageURL, placeholderImage);
+        if ([self.imageView respondsToSelector:@selector(sd_setImageWithURL:placeholderImage:)]) {
+            [self.imageView performSelector:@selector(sd_setImageWithURL:placeholderImage:) withObject:preview.imageURL withObject:placeholderImage];
         }
     }
 
