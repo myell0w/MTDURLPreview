@@ -65,7 +65,7 @@ const char * MYCFStringCopyUTF8String(CFStringRef aString) {
     
     const char * finalEnc = NULL;
     
-    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_8_0) {
+    if (floor(NSFoundationVersionNumber) >= NSFoundationVersionNumber_iOS_8_0) {
         
         NSStringEncoding encoding = [NSString stringEncodingForData:htmlData
                                                     encodingOptions:nil
